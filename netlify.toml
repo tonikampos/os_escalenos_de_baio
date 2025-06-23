@@ -2,9 +2,8 @@
 
 [build]
   # Carpeta a publicar (como estamos en la raíz, usamos ".")
-  publish = "."
-  # Forçar build sempre
-  command = "echo 'Deploy OS ESCALENOS v2.0 con 230 preguntas'"
+  publish = "."  # Forçar build sempre
+  command = "echo 'Deploy OS ESCALENOS v2.0 WORKING FINAL con 230 preguntas + sistema multiusuario'"
   
 [build.environment]
   # Variables de entorno (si necesitas alguna en el futuro)
