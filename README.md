@@ -5,12 +5,13 @@ Unha aplicación web progresiva (PWA) de trivia e cultura general en galego dese
 ## 🌟 Características
 
 ### ✅ Funcionalidades principais
-- **Xogo de trivia** con preguntas de cultura general en galego
+- **Xogo de trivia** con **230+ preguntas** de cultura general en galego
 - **Tres niveis de dificultade**: Fácil, Medio e Difícil
 - **Sistema de puntuación** con bonificacións por tempo
 - **Cronómetro visual** para cada pregunta
 - **Estatísticas detalladas** do rendemento
 - **Historial de partidas** gardado localmente
+- **Especial énfase na cultura galega**: tradicións, literatura, xeografía, gastronomía, etc.
 
 ### ✅ Características PWA
 - **Instalable** como aplicación nativa
