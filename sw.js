@@ -1,4 +1,4 @@
-const CACHE_NAME = 'os-escalenos-trivia-v1.0.0';
+const CACHE_NAME = 'os-escalenos-trivia-v2.0.0';
 const urlsToCache = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const urlsToCache = [
   './js/game.js',
   './js/storage.js',
   './js/questions.js',
+  './version.js',
   './manifest.json'
 ];
 
