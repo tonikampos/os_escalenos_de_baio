@@ -1,8 +1,10 @@
-# Configuración de Netlify para Trivia Galega PWA
+# Configuración de Netlify para Trivia Galega PWA - v2.0
 
 [build]
   # Carpeta a publicar (como estamos en la raíz, usamos ".")
   publish = "."
+  # Forçar build sempre
+  command = "echo 'Deploy OS ESCALENOS v2.0 con 230 preguntas'"
   
 [build.environment]
   # Variables de entorno (si necesitas alguna en el futuro)
