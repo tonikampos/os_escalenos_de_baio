@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Preguntas - OS ESCALENOS</title>
+</head>
+<body>
+    <h1>Test de Preguntas OS ESCALENOS</h1>
+    <div id="resultado"></div>
+    
+    <script src="js/questions.js"></script>
+    <script>
+        // Test simple para verificar as preguntas
+        console.log('Total preguntas:', QUESTIONS_DATABASE.length);
+        
+        const resultado = document.getElementById('resultado');
+        resultado.innerHTML = `
+            <h2>Resultado do Test:</h2>
+            <p><strong>Total de preguntas:</strong> ${QUESTIONS_DATABASE.length}</p>
+            <p><strong>Primeira pregunta:</strong> ${QUESTIONS_DATABASE[0].question}</p>
+            <p><strong>Última pregunta:</strong> ${QUESTIONS_DATABASE[QUESTIONS_DATABASE.length-1].question}</p>
+            <p><strong>Pregunta 131 (nova):</strong> ${QUESTIONS_DATABASE[130] ? QUESTIONS_DATABASE[130].question : 'NON ENCONTRADA'}</p>
+            <p><strong>Pregunta 230 (última nova):</strong> ${QUESTIONS_DATABASE[229] ? QUESTIONS_DATABASE[229].question : 'NON ENCONTRADA'}</p>
+        `;
+        
+        // Verificar se as novas preguntas están
+        const preguntasNovas = QUESTIONS_DATABASE.filter(q => q.id >= 131);
+        console.log('Preguntas novas (>=131):', preguntasNovas.length);
+        
+        resultado.innerHTML += `<p><strong>Preguntas novas detectadas:</strong> ${preguntasNovas.length}</p>`;
+    </script>
+</body>
+</html>

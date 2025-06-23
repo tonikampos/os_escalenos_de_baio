@@ -1,4 +1,4 @@
-const CACHE_NAME = 'os-escalenos-trivia-v2.0.0';
+const CACHE_NAME = 'os-escalenos-trivia-v2.0.1-FORCE-REFRESH';
 const urlsToCache = [
   './',
   './index.html',
