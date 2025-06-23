@@ -1,4 +1,4 @@
-const CACHE_NAME = 'os-escalenos-trivia-v2.0.FINAL-DEPLOY-20250624';
+const CACHE_NAME = 'os-escalenos-trivia-v2.0.ULTIMATE-FORCE-20250624-' + Date.now();
 const urlsToCache = [
   './',
   './index.html',
