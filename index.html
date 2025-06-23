@@ -34,8 +34,32 @@
         </div>
     </div>
 
-    <!-- Pantalla principal -->
-    <div id="home-screen" class="screen">        <header class="app-header">
+    <!-- Pantalla de usuario -->
+    <div id="user-screen" class="screen">
+        <header class="user-header">
+            <div class="logo">👤</div>
+            <h1>Benvido/a!</h1>
+            <p>Introduce o teu nome para comezar</p>
+        </header>
+
+        <main class="user-content">
+            <div class="user-form">
+                <input type="text" id="username-input" placeholder="O teu nome..." maxlength="20">
+                <button class="btn btn-primary" onclick="setUsername()">🎯 Comezar a xogar</button>
+            </div>
+
+            <div class="user-list" id="user-list-container" style="display: none;">
+                <h3>Usuarios anteriores:</h3>
+                <div id="user-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Pantalla principal -->    <div id="home-screen" class="screen">        <header class="app-header">
+            <div class="user-info">
+                <span id="current-user">👤 Usuario</span>
+                <button class="btn btn-small" onclick="changeUser()">Cambiar</button>
+            </div>
             <div class="logo">🧠</div>
             <h1>OS ESCALENOS</h1>
             <h2>Trivia Galega</h2>
@@ -58,23 +82,38 @@
                 </div>
             </div>
 
-            <div class="game-options">
-                <div class="option-card" onclick="startGame('easy')">
-                    <div class="option-icon">😊</div>
-                    <h3>Fácil</h3>
-                    <p>10 preguntas • 30 segundos cada unha</p>
+            <!-- Configuración do xogo -->
+            <div class="game-config">
+                <h3>⚙️ Configurar Partida</h3>
+                
+                <!-- Selector de número de preguntas -->
+                <div class="config-option">
+                    <label for="questions-count">Número de preguntas:</label>
+                    <select id="questions-count">
+                        <option value="5">5 preguntas - Rápido</option>
+                        <option value="10" selected>10 preguntas - Normal</option>
+                        <option value="15">15 preguntas - Medio</option>
+                        <option value="20">20 preguntas - Largo</option>
+                        <option value="25">25 preguntas - Maratón</option>
+                    </select>
                 </div>
-                <div class="option-card" onclick="startGame('medium')">
-                    <div class="option-icon">🤔</div>
-                    <h3>Medio</h3>
-                    <p>15 preguntas • 20 segundos cada unha</p>
-                </div>
-                <div class="option-card" onclick="startGame('hard')">
-                    <div class="option-icon">😰</div>
-                    <h3>Difícil</h3>
-                    <p>20 preguntas • 15 segundos cada unha</p>
+
+                <!-- Selector de dificultade -->
+                <div class="config-option">
+                    <label for="difficulty-select">Dificultade:</label>
+                    <select id="difficulty-select">
+                        <option value="easy">😊 Fácil - 30 segundos</option>
+                        <option value="medium" selected>🤔 Medio - 20 segundos</option>
+                        <option value="hard">😰 Difícil - 15 segundos</option>
+                        <option value="mixed">🎲 Mixto - Todas as dificultades</option>
+                    </select>
                 </div>
             </div>
+
+            <!-- Botón de inicio -->
+            <button class="btn btn-primary btn-large" onclick="startCustomGame()">
+                🚀 Comezar Partida
+            </button>
 
             <button class="btn btn-secondary" onclick="showSettings()">
                 ⚙️ Configuración
@@ -197,10 +236,8 @@
                 <button class="btn btn-danger" onclick="quitGame()">❌ Abandonar</button>
             </div>
         </div>
-    </div>    <!-- Scripts con cache busting -->
-    <script src="version.js?v=20250624"></script>
+    </div>    <!-- Scripts con cache busting -->    <script src="version.js?v=20250624"></script>
     <script src="js/questions.js?v=20250624"></script>
-    <script src="js/debug.js?v=20250624"></script>
     <script src="js/game.js?v=20250624"></script>
     <script src="js/storage.js?v=20250624"></script>
     <script src="js/app.js?v=20250624"></script>

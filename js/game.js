@@ -2,7 +2,6 @@
 class GameEngine {
   constructor() {
     this.questionsManager = new QuestionsManager();
-    this.storageManager = new StorageManager();
     this.currentGame = null;
     this.timer = null;
     this.isPaused = false;
@@ -29,8 +28,10 @@ class GameEngine {
 
   // Carga as estatísticas do usuario
   loadUserStats() {
-    const stats = this.storageManager.getStats();
-    this.updateStatsDisplay(stats);
+    if (storageManager && storageManager.getCurrentUser()) {
+      const stats = storageManager.getStats();
+      this.updateStatsDisplay(stats);
+    }
   }
 
   // Actualiza a visualización das estatísticas
@@ -50,26 +51,42 @@ class GameEngine {
     }
   }
 
-  // Comeza un novo xogo
-  startGame(difficulty = 'medium') {
-    const settings = this.gameSettings[difficulty];
-    const questions = this.questionsManager.prepareGameQuestions(difficulty, settings.questions);
+  // Iniciar xogo con configuración personalizada
+  startGame(difficulty = 'medium', questionsCount = null, timePerQuestion = null) {
+    if (!storageManager.getCurrentUser()) {
+      alert('Debes seleccionar un usuario primeiro');
+      return;
+    }
+
+    // Usar configuración personalizada ou por defecto
+    const settings = this.gameSettings[difficulty] || this.gameSettings.medium;
     
     this.currentGame = {
       difficulty: difficulty,
-      questions: questions,
-      currentQuestionIndex: 0,
+      questionsCount: questionsCount || settings.questions,
+      timePerQuestion: timePerQuestion || settings.timePerQuestion,
+      pointsPerQuestion: settings.points,
+      currentQuestion: 0,
       score: 0,
       correctAnswers: 0,
-      wrongAnswers: 0,
-      timeUsed: 0,
       startTime: Date.now(),
-      answers: [],
-      settings: settings
+      questions: []
     };
 
-    this.showQuestion();
-    this.updateGameDisplay();
+    // Seleccionar preguntas
+    this.selectGameQuestions();
+    
+    // Mostrar primeira pregunta    this.showQuestion();
+    
+    // Iniciar cronómetro
+    this.startTimer();
+  }  // Seleccionar preguntas para o xogo
+  selectGameQuestions() {
+    // Usar o método existente do QuestionsManager
+    this.currentGame.questions = this.questionsManager.prepareGameQuestions(
+      this.currentGame.difficulty,
+      this.currentGame.questionsCount
+    );
   }
 
   // Mostra a pregunta actual
@@ -216,13 +233,12 @@ class GameEngine {
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + duration);
   }
-
   // Pasa á seguinte pregunta
   nextQuestion() {
     if (!this.currentGame) return;
 
     this.questionsManager.nextQuestion();
-    this.currentGame.currentQuestionIndex++;
+    this.currentGame.currentQuestion++;
 
     if (this.questionsManager.hasMoreQuestions()) {
       this.showQuestion();
@@ -230,10 +246,9 @@ class GameEngine {
       this.endGame();
     }
   }
-
   // Comeza o cronómetro dunha pregunta
   startQuestionTimer() {
-    this.timeLeft = this.currentGame.settings.timePerQuestion;
+    this.timeLeft = this.currentGame.timePerQuestion;
     this.updateTimerDisplay();
 
     this.timer = setInterval(() => {
@@ -372,8 +387,7 @@ class GameEngine {
       this.hidePauseModal();
       
       // Volve á pantalla principal
-      window.app.showScreen('home');
-    }
+      window.app.showScreen('home');    }
   }
 
   // Remata o xogo
@@ -385,9 +399,10 @@ class GameEngine {
     // Calcula estatísticas finais
     const gameResult = this.calculateGameResult();
     
-    // Garda o resultado
-    this.storageManager.saveGameResult(gameResult);
-    this.storageManager.updateStats(gameResult);
+    // Garda o resultado usando o novo sistema de usuarios
+    if (storageManager && storageManager.getCurrentUser()) {
+      storageManager.updateStats(gameResult);
+    }
     
     // Mostra os resultados
     this.showResults(gameResult);
@@ -400,18 +415,17 @@ class GameEngine {
   // Calcula o resultado do xogo
   calculateGameResult() {
     const totalTime = Date.now() - this.currentGame.startTime;
-    const accuracy = Math.round((this.currentGame.correctAnswers / this.currentGame.questions.length) * 100);
+    const accuracy = Math.round((this.currentGame.correctAnswers / this.currentGame.questionsCount) * 100);
     
     return {
       difficulty: this.currentGame.difficulty,
-      totalQuestions: this.currentGame.questions.length,
+      totalQuestions: this.currentGame.questionsCount,
       correctAnswers: this.currentGame.correctAnswers,
-      wrongAnswers: this.currentGame.wrongAnswers,
+      wrongAnswers: this.currentGame.questionsCount - this.currentGame.correctAnswers,
       score: this.currentGame.score,
       accuracy: accuracy,
       totalTime: Math.round(totalTime / 1000), // en segundos
-      averageTimePerQuestion: Math.round(this.currentGame.timeUsed / this.currentGame.questions.length),
-      answers: this.currentGame.answers
+      averageTimePerQuestion: Math.round((totalTime / 1000) / this.currentGame.questionsCount)
     };
   }
 

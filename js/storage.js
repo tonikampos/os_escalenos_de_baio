@@ -1,8 +1,9 @@
-// Xestor de almacenamento local para a aplicación de trivia
+// Xestor de almacenamento local para a aplicación de trivia con soporte multi-usuario
 class StorageManager {
   constructor() {
     this.prefix = 'triviaGalega_';
-    this.version = '1.0.0';
+    this.version = '2.0.0';
+    this.currentUser = null;
     this.initializeStorage();
   }
 
@@ -11,25 +12,8 @@ class StorageManager {
     if (!this.getItem('initialized')) {
       this.setItem('initialized', true);
       this.setItem('version', this.version);
-      this.setItem('stats', {
-        gamesPlayed: 0,
-        totalQuestions: 0,
-        correctAnswers: 0,
-        bestScore: 0,
-        bestAccuracy: 0,
-        totalTime: 0,
-        averageTime: 0,
-        streaks: {
-          current: 0,
-          best: 0
-        },
-        categoryStats: {},
-        difficultyStats: {
-          easy: { played: 0, correct: 0 },
-          medium: { played: 0, correct: 0 },
-          hard: { played: 0, correct: 0 }
-        }
-      });
+      this.setItem('users', {});
+      this.setItem('lastUser', '');
       this.setItem('settings', {
         soundEffects: true,
         vibration: true,
@@ -37,114 +21,174 @@ class StorageManager {
         language: 'gl',
         notifications: true
       });
-      this.setItem('gameHistory', []);
+    }
+    // Cargar último usuario se existe
+    const lastUser = this.getItem('lastUser');
+    if (lastUser) {
+      this.currentUser = lastUser;
     }
   }
 
-  // Obtén un elemento do almacenamento
+  // Xestión de usuarios
+  setCurrentUser(username) {
+    if (!username || username.trim() === '') return false;
+    
+    this.currentUser = username.trim();
+    this.setItem('lastUser', this.currentUser);
+    
+    // Crear usuario se non existe
+    const users = this.getItem('users') || {};
+    if (!users[this.currentUser]) {
+      users[this.currentUser] = this.getDefaultUserStats();
+      this.setItem('users', users);
+    }
+    
+    return true;
+  }
+
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
+  getUserList() {
+    const users = this.getItem('users') || {};
+    return Object.keys(users);
+  }
+
+  getDefaultUserStats() {
+    return {
+      gamesPlayed: 0,
+      totalQuestions: 0,
+      correctAnswers: 0,
+      bestScore: 0,
+      bestAccuracy: 0,
+      totalTime: 0,
+      averageTime: 0,
+      streaks: {
+        current: 0,
+        best: 0
+      },
+      categoryStats: {},
+      difficultyStats: {
+        easy: { played: 0, correct: 0 },
+        medium: { played: 0, correct: 0 },
+        hard: { played: 0, correct: 0 }
+      },
+      gameHistory: []
+    };
+  }
+
+  // Métodos básicos de almacenamento
   getItem(key) {
     try {
-      const item = localStorage.getItem(this.prefix + key);
+      const fullKey = this.prefix + key;
+      const item = localStorage.getItem(fullKey);
       return item ? JSON.parse(item) : null;
     } catch (error) {
-      console.error('Erro ao obter elemento do almacenamento:', error);
+      console.error('Error getting item from storage:', error);
       return null;
     }
   }
 
-  // Garda un elemento no almacenamento
   setItem(key, value) {
     try {
-      localStorage.setItem(this.prefix + key, JSON.stringify(value));
+      const fullKey = this.prefix + key;
+      localStorage.setItem(fullKey, JSON.stringify(value));
       return true;
     } catch (error) {
-      console.error('Erro ao gardar elemento no almacenamento:', error);
+      console.error('Error setting item in storage:', error);
       return false;
     }
   }
 
-  // Elimina un elemento do almacenamento
   removeItem(key) {
     try {
-      localStorage.removeItem(this.prefix + key);
+      const fullKey = this.prefix + key;
+      localStorage.removeItem(fullKey);
       return true;
     } catch (error) {
-      console.error('Erro ao eliminar elemento do almacenamento:', error);
+      console.error('Error removing item from storage:', error);
       return false;
     }
   }
 
-  // Limpa todo o almacenamento da aplicación
-  clearAll() {
-    try {
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith(this.prefix)) {
-          localStorage.removeItem(key);
-        }
-      });
-      this.initializeStorage();
-      return true;
-    } catch (error) {
-      console.error('Erro ao limpar almacenamento:', error);
-      return false;
-    }
-  }
-
-  // Obtén as estatísticas do xogador
+  // Obtener estadísticas do usuario actual
   getStats() {
-    return this.getItem('stats') || {};
+    if (!this.currentUser) return this.getDefaultUserStats();
+    
+    const users = this.getItem('users') || {};
+    return users[this.currentUser] || this.getDefaultUserStats();
   }
 
-  // Actualiza as estatísticas despois dun xogo
+  // Actualizar estadísticas do usuario actual
   updateStats(gameResult) {
-    const stats = this.getStats();
+    if (!this.currentUser) return;
     
-    // Estatísticas básicas
-    stats.gamesPlayed++;
-    stats.totalQuestions += gameResult.totalQuestions;
-    stats.correctAnswers += gameResult.correctAnswers;
-    stats.totalTime += gameResult.totalTime;
-    stats.averageTime = Math.round(stats.totalTime / stats.totalQuestions);
+    const users = this.getItem('users') || {};
+    let userStats = users[this.currentUser] || this.getDefaultUserStats();
     
-    // Mellor puntuación
-    if (gameResult.score > stats.bestScore) {
-      stats.bestScore = gameResult.score;
+    // Actualizar estadísticas
+    userStats.gamesPlayed++;
+    userStats.totalQuestions += gameResult.totalQuestions;
+    userStats.correctAnswers += gameResult.correctAnswers;
+    
+    if (gameResult.score > userStats.bestScore) {
+      userStats.bestScore = gameResult.score;
     }
     
-    // Mellor precisión
-    const accuracy = Math.round((gameResult.correctAnswers / gameResult.totalQuestions) * 100);
-    if (accuracy > stats.bestAccuracy) {
-      stats.bestAccuracy = accuracy;
+    const accuracy = (gameResult.correctAnswers / gameResult.totalQuestions) * 100;
+    if (accuracy > userStats.bestAccuracy) {
+      userStats.bestAccuracy = accuracy;
     }
     
-    // Rachas
+    // Actualizar tempo
+    userStats.totalTime += gameResult.totalTime;
+    userStats.averageTime = userStats.totalTime / userStats.gamesPlayed;
+    
+    // Actualizar racha
     if (gameResult.correctAnswers === gameResult.totalQuestions) {
-      stats.streaks.current++;
-      if (stats.streaks.current > stats.streaks.best) {
-        stats.streaks.best = stats.streaks.current;
+      userStats.streaks.current++;
+      if (userStats.streaks.current > userStats.streaks.best) {
+        userStats.streaks.best = userStats.streaks.current;
       }
     } else {
-      stats.streaks.current = 0;
+      userStats.streaks.current = 0;
     }
     
-    // Estatísticas por dificultade
-    if (gameResult.difficulty && stats.difficultyStats[gameResult.difficulty]) {
-      stats.difficultyStats[gameResult.difficulty].played++;
-      stats.difficultyStats[gameResult.difficulty].correct += gameResult.correctAnswers;
+    // Actualizar estadísticas de dificultade
+    const difficulty = gameResult.difficulty;
+    if (userStats.difficultyStats[difficulty]) {
+      userStats.difficultyStats[difficulty].played++;
+      userStats.difficultyStats[difficulty].correct += gameResult.correctAnswers;
     }
     
-    // Garda as estatísticas actualizadas
-    this.setItem('stats', stats);
+    // Gardar historial de partidas
+    userStats.gameHistory.push({
+      ...gameResult,
+      timestamp: Date.now(),
+      date: new Date().toISOString()
+    });
     
-    return stats;
+    // Manter só os últimos 100 xogos
+    if (userStats.gameHistory.length > 100) {
+      userStats.gameHistory = userStats.gameHistory.slice(-100);
+    }
+    
+    users[this.currentUser] = userStats;
+    this.setItem('users', users);
   }
 
-  // Obtén a configuración
+  // Configuracións
   getSettings() {
-    return this.getItem('settings') || {};
+    return this.getItem('settings') || {
+      soundEffects: true,
+      vibration: true,
+      theme: 'light',
+      language: 'gl',
+      notifications: true
+    };
   }
 
-  // Actualiza a configuración
   updateSettings(newSettings) {
     const currentSettings = this.getSettings();
     const updatedSettings = { ...currentSettings, ...newSettings };
@@ -152,188 +196,58 @@ class StorageManager {
     return updatedSettings;
   }
 
-  // Garda un resultado de xogo no historial
-  saveGameResult(gameResult) {
-    const history = this.getGameHistory();
-    const gameRecord = {
-      id: Date.now(),
-      timestamp: new Date().toISOString(),
-      ...gameResult
-    };
+  // Limpeza
+  clearAll() {
+    const keys = Object.keys(localStorage).filter(key => key.startsWith(this.prefix));
+    keys.forEach(key => localStorage.removeItem(key));
+    this.initializeStorage();
+  }
+
+  clearUserData(username) {
+    if (!username) return false;
     
-    history.unshift(gameRecord);
+    const users = this.getItem('users') || {};
+    delete users[username];
+    this.setItem('users', users);
     
-    // Mantén só os últimos 50 xogos
-    if (history.length > 50) {
-      history.splice(50);
+    if (this.currentUser === username) {
+      this.currentUser = null;
+      this.setItem('lastUser', '');
     }
     
-    this.setItem('gameHistory', history);
-    return gameRecord;
+    return true;
   }
 
-  // Obtén o historial de xogos
-  getGameHistory() {
-    return this.getItem('gameHistory') || [];
-  }
-
-  // Obtén o historial filtrado por data
-  getGameHistoryByDate(days = 7) {
-    const history = this.getGameHistory();
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - days);
+  // Exportar/Importar datos
+  exportUserData(username) {
+    const users = this.getItem('users') || {};
+    const userData = users[username];
     
-    return history.filter(game => 
-      new Date(game.timestamp) >= cutoffDate
-    );
-  }
-
-  // Obtén estatísticas do historial
-  getHistoryStats(days = 30) {
-    const history = this.getGameHistoryByDate(days);
-    
-    if (history.length === 0) {
-      return {
-        gamesPlayed: 0,
-        averageScore: 0,
-        averageAccuracy: 0,
-        totalTime: 0,
-        bestGame: null
-      };
-    }
-    
-    const totalScore = history.reduce((sum, game) => sum + game.score, 0);
-    const totalCorrect = history.reduce((sum, game) => sum + game.correctAnswers, 0);
-    const totalQuestions = history.reduce((sum, game) => sum + game.totalQuestions, 0);
-    const totalTime = history.reduce((sum, game) => sum + game.totalTime, 0);
-    const bestGame = history.reduce((best, game) => 
-      game.score > (best?.score || 0) ? game : best, null
-    );
+    if (!userData) return null;
     
     return {
-      gamesPlayed: history.length,
-      averageScore: Math.round(totalScore / history.length),
-      averageAccuracy: Math.round((totalCorrect / totalQuestions) * 100),
-      totalTime: totalTime,
-      bestGame: bestGame
-    };
-  }
-
-  // Exporta todos os datos
-  exportData() {
-    const data = {
-      version: this.version,
+      username: username,
+      data: userData,
       exportDate: new Date().toISOString(),
-      stats: this.getStats(),
-      settings: this.getSettings(),
-      history: this.getGameHistory()
+      version: this.version
     };
-    
-    return JSON.stringify(data, null, 2);
   }
 
-  // Importa datos (para futuras funcionalidades)
-  importData(jsonData) {
+  importUserData(importData) {
     try {
-      const data = JSON.parse(jsonData);
+      if (!importData.username || !importData.data) return false;
       
-      if (data.stats) {
-        this.setItem('stats', data.stats);
-      }
-      
-      if (data.settings) {
-        this.setItem('settings', data.settings);
-      }
-      
-      if (data.history) {
-        this.setItem('gameHistory', data.history);
-      }
+      const users = this.getItem('users') || {};
+      users[importData.username] = importData.data;
+      this.setItem('users', users);
       
       return true;
     } catch (error) {
-      console.error('Erro ao importar datos:', error);
-      return false;
-    }
-  }
-
-  // Obtén o tamaño do almacenamento usado
-  getStorageSize() {
-    let total = 0;
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith(this.prefix)) {
-        total += localStorage.getItem(key).length;
-      }
-    });
-    
-    return {
-      bytes: total,
-      kb: Math.round(total / 1024 * 100) / 100,
-      mb: Math.round(total / (1024 * 1024) * 100) / 100
-    };
-  }
-
-  // Verifica se o almacenamento está dispoñible
-  isStorageAvailable() {
-    try {
-      const test = 'storage_test';
-      localStorage.setItem(test, test);
-      localStorage.removeItem(test);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  // Migra datos de versións antigas (para futuras actualizacións)
-  migrateData() {
-    const currentVersion = this.getItem('version');
-    
-    if (!currentVersion || currentVersion !== this.version) {
-      console.log('Migrando datos á versión', this.version);
-      // Aquí iría a lóxica de migración
-      this.setItem('version', this.version);
-    }
-  }
-
-  // Crea unha copia de seguridade
-  createBackup() {
-    const backup = {
-      timestamp: new Date().toISOString(),
-      version: this.version,
-      data: this.exportData()
-    };
-    
-    // Garda a copia en formato comprimido se é posible
-    try {
-      return btoa(JSON.stringify(backup));
-    } catch (error) {
-      return JSON.stringify(backup);
-    }
-  }
-
-  // Restaura unha copia de seguridade
-  restoreBackup(backupData) {
-    try {
-      let backup;
-      
-      // Intenta descomprimir se é necesario
-      try {
-        backup = JSON.parse(atob(backupData));
-      } catch {
-        backup = JSON.parse(backupData);
-      }
-      
-      if (backup.data) {
-        return this.importData(backup.data);
-      }
-      
-      return false;
-    } catch (error) {
-      console.error('Erro ao restaurar copia de seguridade:', error);
+      console.error('Error importing user data:', error);
       return false;
     }
   }
 }
 
-// Exporta o xestor de almacenamento
-window.StorageManager = StorageManager;
+// Crear instancia global
+window.storageManager = new StorageManager();

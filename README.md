@@ -1,16 +1,18 @@
-# 🧠 OS ESCALENOS - Trivia Galega
+# 🧠 OS ESCALENOS - Trivia Galega v2.0
 
 Unha aplicación web progresiva (PWA) de trivia e cultura general en galego desenvolvida polo equipo **OS ESCALENOS**. Pon a proba os teus coñecementos cun xogo divertido e educativo!
 
-## 🌟 Características
+## 🌟 Características v2.0
 
 ### ✅ Funcionalidades principais
 - **Xogo de trivia** con **230+ preguntas** de cultura general en galego
-- **Tres niveis de dificultade**: Fácil, Medio e Difícil
+- **Tres niveis de dificultade**: Fácil, Medio e Difícil + Modo mixto
+- **Sistema de usuarios**: Crear e xestionar múltiples usuarios
+- **Configuración personalizada**: Escoller número de preguntas (5-25) por partida
 - **Sistema de puntuación** con bonificacións por tempo
 - **Cronómetro visual** para cada pregunta
-- **Estatísticas detalladas** do rendemento
-- **Historial de partidas** gardado localmente
+- **Estatísticas detalladas** do rendemento por usuario
+- **Historial de partidas** gardado localmente por usuario
 - **Especial énfase na cultura galega**: tradicións, literatura, xeografía, gastronomía, etc.
 
 ### ✅ Características PWA
@@ -22,6 +24,8 @@ Unha aplicación web progresiva (PWA) de trivia e cultura general en galego dese
 
 ### ✅ Experiencia de usuario
 - **Interface moderna** e intuitiva
+- **Pantalla de login** con xestión de usuarios
+- **Configuración flexible** de partidas
 - **Animacións fluídas** e feedback visual
 - **Efectos de son** e vibración opcionals
 - **Atallos de teclado** para navegación rápida
@@ -40,13 +44,22 @@ Simplemente abre `index.html` nun navegador moderno.
 
 ## 🎮 Como xogar
 
+### 👤 Configuración inicial
+1. Introduce o teu nome de usuario
+2. Escolle entre usuarios existentes ou crea un novo
+
+### ⚙️ Configuración de partida
+- **Número de preguntas**: De 5 a 25 preguntas
+- **Dificultade**: Fácil, Medio, Difícil ou Mixto
+
 ### Niveis de dificultade
 
-| Nivel | Preguntas | Tempo por pregunta | Puntos base |
-|-------|-----------|-------------------|-------------|
-| 😊 Fácil | 10 | 30 segundos | 10 puntos |
-| 🤔 Medio | 15 | 20 segundos | 15 puntos |
-| 😰 Difícil | 20 | 15 segundos | 20 puntos |
+| Nivel | Tempo por pregunta | Puntos base |
+|-------|-------------------|-------------|
+| 😊 Fácil | 30 segundos | 10 puntos |
+| 🤔 Medio | 20 segundos | 15 puntos |
+| 😰 Difícil | 15 segundos | 20 puntos |
+| 🎲 Mixto | 20 segundos | Variable |
 
 ### Sistema de puntuación
 - **Puntos base** segundo a dificultade
@@ -193,6 +206,32 @@ Logo abre `http://localhost:8000` no navegador.
 - [ ] **Testing automatizado**
 - [ ] **CI/CD** pipeline
 - [ ] **Analytics** de uso
+
+## 📋 Historial de versións
+
+### v2.0.0 (Xuño 2025) 🚀
+**Novas funcionalidades principais:**
+- ✅ **Sistema multiusuario**: Crear e xestionar múltiples usuarios
+- ✅ **Configuración de partidas**: Escoller número de preguntas (5-25)
+- ✅ **Modo mixto de dificultade**: Combina preguntas de todas as dificultades
+- ✅ **Estatísticas por usuario**: Historial e estatísticas individuais
+- ✅ **100+ preguntas novas**: Total de 230+ preguntas de cultura galega
+- ✅ **Interface mellorada**: Login de usuario e configuración de xogo
+- ✅ **Almacenamento por usuario**: Cada usuario ten o seu propio progreso
+
+**Melloras técnicas:**
+- ✅ Refactorización completa do sistema de almacenamento
+- ✅ Integración mellorada entre QuestionsManager e GameEngine
+- ✅ Optimización do sistema de preguntas
+- ✅ Cache busting para forzar actualizacións
+
+### v1.0.0 (Maio 2025)
+**Versión inicial:**
+- ✅ 130 preguntas de cultura galega
+- ✅ Tres niveis de dificultade
+- ✅ Sistema básico de puntuación
+- ✅ PWA completamente funcional
+- ✅ Funcionalidade offline
 
 ## 🤝 Contribución
 

@@ -21,8 +21,80 @@ class TriviaApp {
     // Inicializa o motor do xogo
     this.gameEngine = new GameEngine();
     
-    // Mostra a pantalla principal
-    this.showScreen('home');
+    // Verificar se hai usuario
+    this.checkUserSession();
+  }
+
+  // Verificar sesión de usuario
+  checkUserSession() {
+    const currentUser = storageManager.getCurrentUser();
+    
+    if (!currentUser) {
+      // Non hai usuario, mostrar pantalla de login
+      this.showUserScreen();
+    } else {
+      // Hai usuario, mostrar pantalla principal
+      this.showScreen('home');
+      this.updateUserInterface();
+    }
+  }
+
+  // Mostrar pantalla de usuario
+  showUserScreen() {
+    this.showScreen('user');
+    this.loadUserList();
+    
+    // Foco no input
+    const input = document.getElementById('username-input');
+    if (input) {
+      input.focus();
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          this.setUsername();
+        }
+      });
+    }
+  }
+
+  // Cargar lista de usuarios anteriores
+  loadUserList() {
+    const userList = storageManager.getUserList();
+    const container = document.getElementById('user-list-container');
+    const listElement = document.getElementById('user-list');
+    
+    if (userList.length > 0) {
+      container.style.display = 'block';
+      listElement.innerHTML = userList.map(username => `
+        <div class="user-item" onclick="app.selectUser('${username}')">
+          <span>👤 ${username}</span>
+          <span class="user-games">${this.getUserGameCount(username)} partidas</span>
+        </div>
+      `).join('');
+    } else {
+      container.style.display = 'none';
+    }
+  }
+
+  // Obtener cantidade de partidas dun usuario
+  getUserGameCount(username) {
+    const users = storageManager.getItem('users') || {};
+    const userData = users[username];
+    return userData ? userData.gamesPlayed : 0;
+  }
+
+  // Actualizar interface de usuario
+  updateUserInterface() {
+    const currentUser = storageManager.getCurrentUser();
+    const stats = storageManager.getStats();
+    
+    // Actualizar nome de usuario
+    const userDisplay = document.getElementById('current-user');
+    if (userDisplay && currentUser) {
+      userDisplay.textContent = `👤 ${currentUser}`;
+    }
+    
+    // Actualizar estadísticas
+    this.updateStats(stats);
   }
 
   // Asocia eventos globais
@@ -404,6 +476,101 @@ window.resetAllData = () => {
     }
   }
 };
+
+// FUNCIÓNS GLOBAIS PARA SISTEMA DE USUARIOS
+
+// Establecer nome de usuario
+function setUsername() {
+  const input = document.getElementById('username-input');
+  const username = input.value.trim();
+  
+  if (!username) {
+    alert('Por favor, introduce un nome válido');
+    return;
+  }
+  
+  if (username.length > 20) {
+    alert('O nome non pode ter máis de 20 caracteres');
+    return;
+  }
+  
+  if (storageManager.setCurrentUser(username)) {
+    app.showScreen('home');
+    app.updateUserInterface();
+  }
+}
+
+// Seleccionar usuario da lista
+function selectUser(username) {
+  if (storageManager.setCurrentUser(username)) {
+    app.showScreen('home');
+    app.updateUserInterface();
+  }
+}
+
+// Cambiar usuario
+function changeUser() {
+  if (confirm('¿Queres cambiar de usuario? (gardarse todas as estatísticas)')) {
+    app.showUserScreen();
+  }
+}
+
+// Comezar xogo personalizado
+function startCustomGame() {
+  const questionsCount = parseInt(document.getElementById('questions-count').value);
+  const difficulty = document.getElementById('difficulty-select').value;
+  
+  if (!storageManager.getCurrentUser()) {
+    alert('Debes seleccionar un usuario primeiro');
+    app.showUserScreen();
+    return;
+  }
+  
+  // Configurar e iniciar xogo
+  const gameConfig = {
+    questionsCount: questionsCount,
+    difficulty: difficulty,
+    timePerQuestion: getTimeForDifficulty(difficulty)
+  };
+  
+  startGameWithConfig(gameConfig);
+}
+
+// Obtener tempo segundo dificultade
+function getTimeForDifficulty(difficulty) {
+  switch (difficulty) {
+    case 'easy': return 30;
+    case 'medium': return 20;
+    case 'hard': return 15;
+    case 'mixed': return 20; // Tempo medio para mixto
+    default: return 20;
+  }
+}
+
+// Iniciar xogo con configuración personalizada
+function startGameWithConfig(config) {
+  if (app.gameEngine) {
+    app.gameEngine.startGame(config.difficulty, config.questionsCount, config.timePerQuestion);
+    app.showScreen('game');
+  }
+}
+
+// Funcións compatibles con versión anterior
+function startGame(difficulty = 'medium') {
+  const questionsMap = {
+    'easy': 10,
+    'medium': 15,
+    'hard': 20
+  };
+  
+  const config = {
+    questionsCount: questionsMap[difficulty] || 15,
+    difficulty: difficulty,
+    timePerQuestion: getTimeForDifficulty(difficulty)
+  };
+  
+  startGameWithConfig(config);
+}
 
 // Inicializa a aplicación cando o DOM estea listo
 document.addEventListener('DOMContentLoaded', () => {
