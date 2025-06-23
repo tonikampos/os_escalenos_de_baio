@@ -515,10 +515,49 @@ function changeUser() {
   }
 }
 
-// Comezar xogo personalizado
+// Comezar xogo simple (nova función)
+function startSimpleGame() {
+  const questionsInput = document.getElementById('questions-count');
+  if (!questionsInput) {
+    alert('Erro: Non se pode atopar o selector de preguntas');
+    return;
+  }
+  
+  const questionsCount = parseInt(questionsInput.value);
+  
+  // Validar número de preguntas
+  if (!questionsCount || questionsCount < 5 || questionsCount > 50) {
+    alert('Introduce un número válido de preguntas entre 5 e 50');
+    questionsInput.focus();
+    return;
+  }
+  
+  // Verificar usuario
+  if (!storageManager.getCurrentUser()) {
+    alert('Debes seleccionar un usuario primeiro');
+    app.showUserScreen();
+    return;
+  }
+  
+  // Verificar que gameEngine existe
+  if (!app || !app.gameEngine) {
+    alert('Erro: O motor do xogo non está listo');
+    return;
+  }
+  
+  // Iniciar xogo con configuración simple
+  try {
+    app.gameEngine.startSimpleGame(questionsCount);
+    app.showScreen('game');
+  } catch (error) {
+    alert('Erro ao iniciar o xogo: ' + error.message);
+  }
+}
+
+// Comezar xogo personalizado (función orixinal - mantida para compatibilidade)
 function startCustomGame() {
   const questionsCount = parseInt(document.getElementById('questions-count').value);
-  const difficulty = document.getElementById('difficulty-select').value;
+  const difficulty = document.getElementById('difficulty-select')?.value || 'mixed';
   
   if (!storageManager.getCurrentUser()) {
     alert('Debes seleccionar un usuario primeiro');
@@ -530,7 +569,7 @@ function startCustomGame() {
   const gameConfig = {
     questionsCount: questionsCount,
     difficulty: difficulty,
-    timePerQuestion: getTimeForDifficulty(difficulty)
+    timePerQuestion: 25 // Tempo fixo para simplificar
   };
   
   startGameWithConfig(gameConfig);

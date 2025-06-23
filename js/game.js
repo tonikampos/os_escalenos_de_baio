@@ -71,16 +71,15 @@ class GameEngine {
       correctAnswers: 0,
       startTime: Date.now(),
       questions: []
-    };
-
-    // Seleccionar preguntas
+    };    // Seleccionar preguntas
     this.selectGameQuestions();
     
-    // Mostrar primeira pregunta    this.showQuestion();
+    // Mostrar primeira pregunta
+    this.showQuestion();
     
-    // Iniciar cronómetro
-    this.startTimer();
-  }  // Seleccionar preguntas para o xogo
+    // Iniciar cronómetro da pregunta
+    this.startQuestionTimer();
+  }// Seleccionar preguntas para o xogo
   selectGameQuestions() {
     // Usar o método existente do QuestionsManager
     this.currentGame.questions = this.questionsManager.prepareGameQuestions(
@@ -126,7 +125,6 @@ class GameEngine {
       });
     }
   }
-
   // Selecciona unha resposta
   selectAnswer(selectedIndex) {
     if (!this.currentGame || this.isPaused) return;
@@ -135,7 +133,7 @@ class GameEngine {
     
     const question = this.questionsManager.getCurrentQuestion();
     const isCorrect = selectedIndex === question.correct;
-    const timeForQuestion = this.currentGame.settings.timePerQuestion - this.timeLeft;
+    const timeForQuestion = this.currentGame.timePerQuestion - this.timeLeft;
     
     // Garda a resposta
     const answerRecord = {
@@ -262,7 +260,6 @@ class GameEngine {
       }
     }, 1000);
   }
-
   // Actualiza a visualización do cronómetro
   updateTimerDisplay() {
     const timerText = document.getElementById('timer-text');
@@ -274,7 +271,7 @@ class GameEngine {
 
     // Actualiza a animación do cronómetro circular
     if (timerCircle) {
-      const percentage = (this.timeLeft / this.currentGame.settings.timePerQuestion) * 100;
+      const percentage = (this.timeLeft / this.currentGame.timePerQuestion) * 100;
       timerCircle.style.setProperty('--timer-percentage', percentage + '%');
       
       // Cambia cor cando queda pouco tempo
@@ -297,8 +294,7 @@ class GameEngine {
   // Manexo de tempo esgotado
   timeUp() {
     this.stopTimer();
-    
-    // Marca como resposta incorrecta
+      // Marca como resposta incorrecta
     const question = this.questionsManager.getCurrentQuestion();
     const answerRecord = {
       questionId: question.id,
@@ -306,12 +302,12 @@ class GameEngine {
       selectedAnswer: null,
       correctAnswer: question.answers[question.correct],
       isCorrect: false,
-      timeUsed: this.currentGame.settings.timePerQuestion
+      timeUsed: this.currentGame.timePerQuestion
     };
     
     this.currentGame.answers.push(answerRecord);
     this.currentGame.wrongAnswers++;
-    this.currentGame.timeUsed += this.currentGame.settings.timePerQuestion;
+    this.currentGame.timeUsed += this.currentGame.timePerQuestion;
 
     // Mostra a resposta correcta
     this.showAnswerFeedback(-1, question.correct, false);
@@ -494,6 +490,42 @@ class GameEngine {
   // Reestablece todas as estatísticas
   resetStats() {
     return this.storageManager.clearAll();
+  }  // Iniciar xogo simple (só con número de preguntas)
+  startSimpleGame(questionsCount) {
+    if (!storageManager.getCurrentUser()) {
+      alert('Debes seleccionar un usuario primeiro');
+      return;
+    }
+
+    // Configuración simple: sen dificultades, só número de preguntas
+    this.currentGame = {
+      difficulty: 'mixed', // Sempre mixto para simplificar
+      questionsCount: questionsCount,
+      timePerQuestion: 25, // Tempo fixo
+      pointsPerQuestion: 15, // Puntos fixos
+      currentQuestion: 0,
+      score: 0,
+      correctAnswers: 0,
+      wrongAnswers: 0,
+      startTime: Date.now(),
+      questions: [],
+      answers: [],
+      timeUsed: 0
+    };
+
+    // Seleccionar preguntas
+    this.selectGameQuestions();
+    
+    if (this.currentGame.questions.length === 0) {
+      alert('Erro: Non se puideron cargar as preguntas');
+      return;
+    }
+    
+    // Mostrar primeira pregunta
+    this.showQuestion();
+    
+    // Iniciar cronómetro da pregunta
+    this.startQuestionTimer();
   }
 }
 
