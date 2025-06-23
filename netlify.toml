@@ -1,0 +1,71 @@
+# Configuración de Netlify para Trivia Galega PWA
+
+[build]
+  # Carpeta a publicar (como estamos en la raíz, usamos ".")
+  publish = "."
+  
+[build.environment]
+  # Variables de entorno (si necesitas alguna en el futuro)
+  
+[[headers]]
+  # Configuración para todos los archivos
+  for = "/*"
+  [headers.values]
+    # Headers de seguridad
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Headers PWA importantes
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Opener-Policy = "same-origin"
+
+[[headers]]
+  # Configuración específica para el Service Worker
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Service-Worker-Allowed = "/"
+
+[[headers]]
+  # Configuración para el manifest
+  for = "/manifest.json"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
+[[headers]]
+  # Cache para assets estáticos (CSS, JS, iconos)
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects para SPA (opcional, pero útil)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  
+# Configuraciones para mejor rendimiento
+[build.processing]
+  skip_processing = false
+[build.processing.css]
+  bundle = true
+  minify = true
+[build.processing.js]
+  bundle = false
+  minify = true
+[build.processing.html]
+  pretty_urls = true
+[build.processing.images]
+  compress = true

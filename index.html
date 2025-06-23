@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>OS ESCALENOS - Trivia Galega 🧠</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Trivia Galega do equipo OS ESCALENOS - Xogo de cultura general">
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- PWA Links -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Pantalla de carga -->
+    <div id="loading-screen" class="screen active">        <div class="loading-content">
+            <div class="logo">🧠</div>
+            <h1>OS ESCALENOS</h1>
+            <h2>Trivia Galega</h2>
+            <p>Preparando as preguntas...</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Pantalla principal -->
+    <div id="home-screen" class="screen">        <header class="app-header">
+            <div class="logo">🧠</div>
+            <h1>OS ESCALENOS</h1>
+            <h2>Trivia Galega</h2>
+            <p>Pon a proba os teus coñecementos!</p>
+        </header>
+
+        <main class="home-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-questions">0</div>
+                    <div class="stat-label">Preguntas dispoñibles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="best-score">0</div>
+                    <div class="stat-label">Mellor puntuación</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="games-played">0</div>
+                    <div class="stat-label">Partidas xogadas</div>
+                </div>
+            </div>
+
+            <div class="game-options">
+                <div class="option-card" onclick="startGame('easy')">
+                    <div class="option-icon">😊</div>
+                    <h3>Fácil</h3>
+                    <p>10 preguntas • 30 segundos cada unha</p>
+                </div>
+                <div class="option-card" onclick="startGame('medium')">
+                    <div class="option-icon">🤔</div>
+                    <h3>Medio</h3>
+                    <p>15 preguntas • 20 segundos cada unha</p>
+                </div>
+                <div class="option-card" onclick="startGame('hard')">
+                    <div class="option-icon">😰</div>
+                    <h3>Difícil</h3>
+                    <p>20 preguntas • 15 segundos cada unha</p>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="showSettings()">
+                ⚙️ Configuración
+            </button>
+        </main>
+    </div>
+
+    <!-- Pantalla de xogo -->
+    <div id="game-screen" class="screen">
+        <header class="game-header">
+            <div class="game-info">
+                <span id="question-counter">1/10</span>
+                <div class="timer">
+                    <div class="timer-circle">
+                        <span id="timer-text">30</span>
+                    </div>
+                </div>
+                <span id="current-score">0 pts</span>
+            </div>
+        </header>
+
+        <main class="game-content">
+            <div class="question-card">
+                <h2 id="question-text">Cargando pregunta...</h2>
+                <div class="answers-grid" id="answers-container">
+                    <!-- As respostas xeraranse dinámicamente -->
+                </div>
+            </div>
+        </main>
+
+        <footer class="game-footer">
+            <button class="btn btn-secondary" onclick="pauseGame()">⏸️ Pausa</button>
+            <button class="btn btn-danger" onclick="quitGame()">❌ Saír</button>
+        </footer>
+    </div>
+
+    <!-- Pantalla de resultados -->
+    <div id="results-screen" class="screen">
+        <header class="results-header">
+            <div class="results-icon" id="results-icon">🎉</div>
+            <h1 id="results-title">Parabéns!</h1>
+        </header>
+
+        <main class="results-content">
+            <div class="final-score">
+                <div class="score-number" id="final-score">0</div>
+                <div class="score-label">puntos</div>
+            </div>
+
+            <div class="results-stats">
+                <div class="result-stat">
+                    <span class="stat-value" id="correct-answers">0</span>
+                    <span class="stat-label">Correctas</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-value" id="wrong-answers">0</span>
+                    <span class="stat-label">Incorrectas</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-value" id="accuracy">0%</span>
+                    <span class="stat-label">Precisión</span>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button class="btn btn-primary" onclick="startGame()">🔄 Xogar de novo</button>
+                <button class="btn btn-secondary" onclick="goHome()">🏠 Inicio</button>
+                <button class="btn btn-secondary" onclick="shareResults()">📤 Compartir</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Pantalla de configuración -->
+    <div id="settings-screen" class="screen">
+        <header class="settings-header">
+            <button class="btn btn-back" onclick="goHome()">← Volver</button>
+            <h1>Configuración</h1>
+        </header>
+
+        <main class="settings-content">
+            <div class="setting-group">
+                <h3>Xogo</h3>
+                <div class="setting-item">
+                    <label>Son dos efectos</label>
+                    <input type="checkbox" id="sound-effects" checked>
+                </div>
+                <div class="setting-item">
+                    <label>Vibración</label>
+                    <input type="checkbox" id="vibration" checked>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Datos</h3>
+                <button class="btn btn-danger" onclick="resetAllData()">
+                    🗑️ Borrar todos os datos
+                </button>
+                <p class="setting-note">Isto eliminará todas as túas puntuacións e estatísticas.</p>
+            </div>
+
+            <div class="setting-group">
+                <h3>Información</h3>                <div class="app-info">
+                    <p><strong>Versión:</strong> 1.0.0</p>
+                    <p><strong>Última actualización:</strong> Xuño 2025</p>
+                    <p><strong>Equipo:</strong> OS ESCALENOS 🏆</p>
+                    <p><strong>Desenvolvido por:</strong> Ti mesmo 😊</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de pausa -->
+    <div id="pause-modal" class="modal">
+        <div class="modal-content">
+            <h2>Xogo en pausa</h2>
+            <p>O cronómetro detívose</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="resumeGame()">▶️ Continuar</button>
+                <button class="btn btn-danger" onclick="quitGame()">❌ Abandonar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/questions.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
