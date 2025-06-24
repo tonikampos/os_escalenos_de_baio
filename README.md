@@ -5,15 +5,14 @@ Unha aplicación web progresiva (PWA) de trivia e cultura general en galego dese
 ## 🌟 Características v2.0
 
 ### ✅ Funcionalidades principais
-- **Xogo de trivia** con **230+ preguntas** de cultura general en galego
-- **Tres niveis de dificultade**: Fácil, Medio e Difícil + Modo mixto
+- **Xogo de trivia** con **330+ preguntas** de cultura general en galego
 - **Sistema de usuarios**: Crear e xestionar múltiples usuarios
 - **Configuración personalizada**: Escoller número de preguntas (5-25) por partida
-- **Sistema de puntuación** con bonificacións por tempo
-- **Cronómetro visual** para cada pregunta
+- **Avance manual**: O usuario controla cando pasar á seguinte pregunta
+- **Sistema de puntuación** gardado por usuario
 - **Estatísticas detalladas** do rendemento por usuario
 - **Historial de partidas** gardado localmente por usuario
-- **Especial énfase na cultura galega**: tradicións, literatura, xeografía, gastronomía, etc.
+- **Especial énfase na cultura galega**: tradicións, literatura, xeografía, gastronomía, deportes, música, etc.
 
 ### ✅ Características PWA
 - **Instalable** como aplicación nativa
@@ -208,6 +207,19 @@ Logo abre `http://localhost:8000` no navegador.
 - [ ] **Analytics** de uso
 
 ## 📋 Historial de versións
+
+### v2.1.0 (Xaneiro 2025) 🎯
+**100 preguntas novas de cultura galega:**
+- ✅ **330+ preguntas totais**: 100 preguntas novas de nivel medio-alto
+- ✅ **Temas especializados**: Xeografía, música, deportes e sociedade galega
+- ✅ **Coñecemento profundo**: Preguntas sobre comarcas, personaxes históricos, tradicions
+- ✅ **Cultura contemporánea**: Deportistas, músicos e eventos actuais de Galicia
+- ✅ **Patrimonio galego**: Mosteiros, castelos, festas e gastronomía tradicional
+
+**Melloras na experiencia de xogo:**
+- ✅ **Avance manual**: O usuario controla cando pasar á seguinte pregunta
+- ✅ **Sen límite de tempo**: Xogo relaxado sen presión temporal
+- ✅ **Feedback visual mellorado**: Indicadores claros de resposta correcta/incorrecta
 
 ### v2.0.0 (Xuño 2025) 🚀
 **Novas funcionalidades principais:**

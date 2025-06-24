@@ -1853,14 +1853,814 @@ const QUESTIONS_DATABASE = [
     correct: 0,
     category: "cultura",
     difficulty: "medium"
-  },
-  {
+  },  {
     id: 230,
     question: "Cal é o nome do museo máis visitado de Galicia?",
     answers: ["Museo do Pobo Galego", "Museo de Pontevedra", "Museo de Belas Artes da Coruña", "Centro Galego de Arte Contemporánea"],
     correct: 1,
     category: "cultura",
     difficulty: "medium"
+  },
+  // Preguntas 231-330: Cultura galega nivel medio-alto
+  {
+    id: 231,
+    question: "Cal é a altitude máxima da serra do Xurés?",
+    answers: ["1506 metros", "1438 metros", "1621 metros", "1367 metros"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 232,
+    question: "En que comarca se atopa o mosteiro de Caaveiro?",
+    answers: ["As Mariñas", "Eume", "Terra Chá", "A Ulloa"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 233,
+    question: "Cal é o nome científico do carballo galego?",
+    answers: ["Quercus robur", "Quercus pyrenaica", "Quercus ilex", "Quercus faginea"],
+    correct: 0,
+    category: "ciencia",
+    difficulty: "hard"
+  },
+  {
+    id: 234,
+    question: "Quen foi o primeiro presidente da Xunta de Galicia?",
+    answers: ["Xerardo Fernández Albor", "Gonzalo Fernández de la Mora", "Antonio Rosón Pérez", "Manuel Fraga Iribarne"],
+    correct: 0,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 235,
+    question: "En que ano se fundou a Real Academia Galega?",
+    answers: ["1905", "1906", "1904", "1907"],
+    correct: 0,
+    category: "cultura",
+    difficulty: "hard"
+  },
+  {
+    id: 236,
+    question: "Cal é o río que nace no lago de Sanabria?",
+    answers: ["Tera", "Bibei", "Camba", "Arnoia"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 237,
+    question: "Quen compuxo a ópera 'Margarita la Tornera'?",
+    answers: ["Ruperto Chapí", "Manuel Quiroga", "Reveriano Soutullo", "Juan Montes"],
+    correct: 2,
+    category: "musica",
+    difficulty: "hard"
+  },
+  {
+    id: 238,
+    question: "Cal é a lonxitude total da costa galega?",
+    answers: ["1195 km", "1498 km", "1720 km", "1634 km"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 239,
+    question: "En que concello se atopa a praia de Augas Santas?",
+    answers: ["Pobra do Caramiñal", "Boiro", "Rianxo", "Ribeira"],
+    correct: 3,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 240,
+    question: "Quen escribiu 'A esmorga'?",
+    answers: ["Álvaro Cunqueiro", "Eduardo Blanco Amor", "Rafael Dieste", "Anxel Fole"],
+    correct: 1,
+    category: "literatura",
+    difficulty: "medium"
+  },
+  {
+    id: 241,
+    question: "Cal é o nome galego do estorniño?",
+    answers: ["Merlo", "Tordo", "Estorniño", "Melro"],
+    correct: 2,
+    category: "ciencia",
+    difficulty: "medium"
+  },
+  {
+    id: 242,
+    question: "En que vila se celebra o festival de Ortigueira?",
+    answers: ["Ortigueira", "Cedeira", "Cariño", "Viveiro"],
+    correct: 0,
+    category: "musica",
+    difficulty: "medium"
+  },
+  {
+    id: 243,
+    question: "Cal é a montaña máis alta da provincia de Ourense?",
+    answers: ["Pena Trevinca", "Cabeza de Manzaneda", "Pena Negra", "Alto do Acebo"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 244,
+    question: "Que instrumento tradicional galego ten cordas metálicas?",
+    answers: ["Pandeireta", "Zanfona", "Tambor", "Bombo"],
+    correct: 1,
+    category: "musica",
+    difficulty: "medium"
+  },
+  {
+    id: 245,
+    question: "En que ano se inaugurou o AVE a Galicia?",
+    answers: ["2009", "2011", "2010", "2012"],
+    correct: 1,
+    category: "historia",
+    difficulty: "medium"
+  },
+  {
+    id: 246,
+    question: "Cal é o nome do cabo máis occidental de Galicia?",
+    answers: ["Cabo Fisterra", "Cabo Touriñán", "Cabo Vilán", "Cabo Home"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 247,
+    question: "Quen foi o fundador do Partido Galeguista?",
+    answers: ["Alexandre Bóveda", "Antón Villar Ponte", "Vicente Risco", "Ramón Otero Pedrayo"],
+    correct: 0,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 248,
+    question: "Cal é o nome da danza tradicional galega máis coñecida?",
+    answers: ["Muiñeira", "Alalá", "Foliada", "Pandeirada"],
+    correct: 0,
+    category: "musica",
+    difficulty: "easy"
+  },
+  {
+    id: 249,
+    question: "En que comarca se sitúa a cidade de Monforte de Lemos?",
+    answers: ["A Ulloa", "Terra de Lemos", "Chantada", "Sarria"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 250,
+    question: "Cal é o equipo de fútbol máis antigo de Galicia?",
+    answers: ["RC Celta de Vigo", "RC Deportivo", "CD Lugo", "Pontevedra CF"],
+    correct: 3,
+    category: "deportes",
+    difficulty: "hard"
+  },
+  {
+    id: 251,
+    question: "Que tipo de rocha predomina na Costa da Morte?",
+    answers: ["Granito", "Pizarra", "Cuarcita", "Xisto"],
+    correct: 0,
+    category: "ciencia",
+    difficulty: "medium"
+  },
+  {
+    id: 252,
+    question: "En que século se construíu a catedral de Mondoñedo?",
+    answers: ["XII", "XIII", "XIV", "XV"],
+    correct: 1,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 253,
+    question: "Cal é o nome do parque natural máis grande de Galicia?",
+    answers: ["Baixa Limia - Serra do Xurés", "O Invernadeiro", "Monte Aloia", "Corrubedo"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 254,
+    question: "Quen foi o primeiro alcalde democrático de Santiago?",
+    answers: ["Xerardo Estévez", "Francisco Vázquez", "Ánxel Currás", "Constantino Candeira"],
+    correct: 0,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 255,
+    question: "Cal é o nome galego da laverca?",
+    answers: ["Cotovía", "Laverca", "Toutinegra", "Escribenta"],
+    correct: 0,
+    category: "ciencia",
+    difficulty: "medium"
+  },
+  {
+    id: 256,
+    question: "En que ano morreu Rosalía de Castro?",
+    answers: ["1884", "1885", "1886", "1887"],
+    correct: 1,
+    category: "literatura",
+    difficulty: "medium"
+  },
+  {
+    id: 257,
+    question: "Cal é a ría máis longa de Galicia?",
+    answers: ["Ría de Arousa", "Ría de Vigo", "Ría de Pontevedra", "Ría de Muros e Noia"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 258,
+    question: "Que escultor galego creou os 'Dous Amigos'?",
+    answers: ["Francisco Asorey", "Acisclo Manzano", "Julio González", "Isaac Díaz Pardo"],
+    correct: 0,
+    category: "arte",
+    difficulty: "hard"
+  },
+  {
+    id: 259,
+    question: "En que concello está o mosteiro de Oseira?",
+    answers: ["Cea", "San Cristovo de Cea", "Castro Caldelas", "Nogueira de Ramuín"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 260,
+    question: "Cal é o nome do himno oficial de Galicia?",
+    answers: ["Os Pinos", "Galicia no máis", "A Rianxeira", "Alborada gallega"],
+    correct: 0,
+    category: "cultura",
+    difficulty: "easy"
+  },
+  {
+    id: 261,
+    question: "Quen foi o primeiro ciclista galego en gañar unha etapa no Tour de Francia?",
+    answers: ["Óscar Freire", "Ezequiel Mosquera", "Herminio Díaz Zabala", "Samuel Sánchez"],
+    correct: 2,
+    category: "deportes",
+    difficulty: "hard"
+  },
+  {
+    id: 262,
+    question: "Cal é a temperatura media anual en Santiago de Compostela?",
+    answers: ["12°C", "13°C", "14°C", "15°C"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 263,
+    question: "En que ano se creou a Universidade de Vigo?",
+    answers: ["1989", "1990", "1991", "1992"],
+    correct: 0,
+    category: "educacion",
+    difficulty: "medium"
+  },
+  {
+    id: 264,
+    question: "Cal é o nome do tradicional caldo galego con grelos?",
+    answers: ["Caldo galego", "Lacón con grelos", "Cocido galego", "Pote galego"],
+    correct: 1,
+    category: "gastronomia",
+    difficulty: "easy"
+  },
+  {
+    id: 265,
+    question: "Que compositor galego escribiu 'Alborada de Vigo'?",
+    answers: ["Pascual Veiga", "Reveriano Soutullo", "Juan Montes", "Rogelio Groba"],
+    correct: 3,
+    category: "musica",
+    difficulty: "hard"
+  },
+  {
+    id: 266,
+    question: "En que concello se atopa a praia das Catedrais?",
+    answers: ["Ribadeo", "Foz", "Burela", "Viveiro"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 267,
+    question: "Cal é o nome do primeiro xornal en galego?",
+    answers: ["A Nosa Terra", "El Eco de Galicia", "A Gaita Gallega", "Gaceta de Galicia"],
+    correct: 2,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 268,
+    question: "Que tipo de árbore é a que predomina nos bosques atlánticos galegos?",
+    answers: ["Carballo", "Castiñeiro", "Bidueiro", "Freixo"],
+    correct: 0,
+    category: "ciencia",
+    difficulty: "medium"
+  },
+  {
+    id: 269,
+    question: "En que ano naceu Álvaro Cunqueiro?",
+    answers: ["1910", "1911", "1912", "1913"],
+    correct: 1,
+    category: "literatura",
+    difficulty: "hard"
+  },
+  {
+    id: 270,
+    question: "Cal é o nome da principal escola de gaitas de Galicia?",
+    answers: ["Escola Provincial de Gaitas de Ourense", "Real Banda de Gaitas de Orense", "Banda de Gaitas de Ortigueira", "Escola de Gaitas de Pontevedra"],
+    correct: 0,
+    category: "musica",
+    difficulty: "hard"
+  },
+  {
+    id: 271,
+    question: "En que provincia se atopa a vila de Allariz?",
+    answers: ["Lugo", "Ourense", "Pontevedra", "A Coruña"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 272,
+    question: "Cal é o nome do clube de baloncesto máis exitoso de Galicia?",
+    answers: ["Obradoiro CAB", "Básquet Coruña", "CB Lugo", "Ourense Baloncesto"],
+    correct: 0,
+    category: "deportes",
+    difficulty: "medium"
+  },
+  {
+    id: 273,
+    question: "Que santo é o patrón dos mariñeiros galegos?",
+    answers: ["San Pedro", "San Andrés", "San Telmo", "San Nicolás"],
+    correct: 2,
+    category: "cultura",
+    difficulty: "medium"
+  },
+  {
+    id: 274,
+    question: "En que concello está a ponte sobre o río Ulla máis antiga?",
+    answers: ["Vedra", "Ponte Ulla", "Padrón", "Teo"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 275,
+    question: "Cal é o nome do primeiro filme falado en galego?",
+    answers: ["A Rianxeira", "Sempre Xonxa", "Marcelino Pan y Vino", "El Hombre de los Muñecos"],
+    correct: 1,
+    category: "cultura",
+    difficulty: "hard"
+  },
+  {
+    id: 276,
+    question: "Quen foi o primeiro rector da Universidade de Santiago?",
+    answers: ["Ángel González Álvarez", "José Filgueira Valverde", "Ramón Piñeiro", "Vicente Risco"],
+    correct: 0,
+    category: "educacion",
+    difficulty: "hard"
+  },
+  {
+    id: 277,
+    question: "Cal é a produción anual de mexillóns nas rías galegas?",
+    answers: ["200.000 toneladas", "250.000 toneladas", "300.000 toneladas", "350.000 toneladas"],
+    correct: 1,
+    category: "economia",
+    difficulty: "hard"
+  },
+  {
+    id: 278,
+    question: "En que ano se abriu o primeiro tramo da autopista AP-9?",
+    answers: ["1974", "1975", "1976", "1977"],
+    correct: 2,
+    category: "historia",
+    difficulty: "medium"
+  },
+  {
+    id: 279,
+    question: "Cal é o nome da festividade que se celebra o 25 de xullo?",
+    answers: ["Día de Galicia", "Santiago Apóstol", "Día das Letras Galegas", "Día da Patria Galega"],
+    correct: 1,
+    category: "cultura",
+    difficulty: "easy"
+  },
+  {
+    id: 280,
+    question: "Que poeta galego foi homenaxeado no Día das Letras Galegas de 2020?",
+    answers: ["Ricardo Carballo Calero", "Xohana Torres", "Luz Pozo Garza", "Antón Avilés de Taramancos"],
+    correct: 0,
+    category: "literatura",
+    difficulty: "medium"
+  },
+  {
+    id: 281,
+    question: "En que concello se atopa o castro de Viladonga?",
+    answers: ["Castro de Rei", "Guitiriz", "Vilalba", "Muras"],
+    correct: 0,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 282,
+    question: "Cal é o nome da danza tradicional de espadas galega?",
+    answers: ["Danza das espadas", "Danza prima", "Ball de bastons", "Aurresku"],
+    correct: 0,
+    category: "musica",
+    difficulty: "medium"
+  },
+  {
+    id: 283,
+    question: "Que atleta galego gañou medalla olímpica en Atlanta 1996?",
+    answers: ["David Cal", "Carlos Pérez", "Beatriz Manchón", "Francisco Fernández Ochoa"],
+    correct: 2,
+    category: "deportes",
+    difficulty: "hard"
+  },
+  {
+    id: 284,
+    question: "En que río se sitúa a central hidroeléctrica de Belesar?",
+    answers: ["Miño", "Sil", "Ulla", "Tambre"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 285,
+    question: "Cal é o nome do tradicional licor galego feito con herbas?",
+    answers: ["Orujo de herbas", "Augardente", "Queimada", "Licor café"],
+    correct: 0,
+    category: "gastronomia",
+    difficulty: "easy"
+  },
+  {
+    id: 286,
+    question: "Quen foi o primeiro galego en gañar un Grammy Latino?",
+    answers: ["Luz Casal", "Siniestro Total", "Mägo de Oz", "Jesse & Joy"],
+    correct: 0,
+    category: "musica",
+    difficulty: "hard"
+  },
+  {
+    id: 287,
+    question: "En que concello está o pazo de Oca?",
+    answers: ["A Estrada", "Silleda", "Lalín", "Vila de Cruces"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 288,
+    question: "Cal é a superficie total de Galicia?",
+    answers: ["29.574 km²", "29.434 km²", "29.754 km²", "29.634 km²"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 289,
+    question: "Que escritor galego escribiu 'Memorias dun neno labrego'?",
+    answers: ["Xosé Neira Vilas", "Otero Pedrayo", "Castelao", "Cunqueiro"],
+    correct: 0,
+    category: "literatura",
+    difficulty: "medium"
+  },
+  {
+    id: 290,
+    question: "En que ano se creou a Televisión de Galicia?",
+    answers: ["1985", "1984", "1986", "1987"],
+    correct: 0,
+    category: "historia",
+    difficulty: "medium"
+  },
+  {
+    id: 291,
+    question: "Cal é o nome da raza de cabalo autóctona de Galicia?",
+    answers: ["Cabalo galego", "Garrano", "Pottoka", "Losino"],
+    correct: 1,
+    category: "ciencia",
+    difficulty: "medium"
+  },
+  {
+    id: 292,
+    question: "En que concello se celebra a Festa do Marisco?",
+    answers: ["O Grove", "Cambados", "Sanxenxo", "Vilanova de Arousa"],
+    correct: 0,
+    category: "gastronomia",
+    difficulty: "easy"
+  },
+  {
+    id: 293,
+    question: "Quen foi o primeiro presidente do Parlamento de Galicia?",
+    answers: ["Antonio Carro Martínez", "Victorino Núñez", "Pilar Rojo", "José Luis Barreiro"],
+    correct: 0,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 294,
+    question: "Cal é o nome do faro máis alto de Galicia?",
+    answers: ["Faro de Fisterra", "Faro de Estaca de Bares", "Faro da Coruña", "Faro de Cabo Vilán"],
+    correct: 2,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 295,
+    question: "En que século se fundou o mosteiro de Sobrado dos Monxes?",
+    answers: ["X", "XI", "XII", "XIII"],
+    correct: 0,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 296,
+    question: "Cal é o nome do grupo musical galego máis internacional?",
+    answers: ["Luar na Lubre", "Milladoiro", "Carlos Núñez", "Susana Seivane"],
+    correct: 1,
+    category: "musica",
+    difficulty: "medium"
+  },
+  {
+    id: 297,
+    question: "En que concello está a fortaleza de Monterreal?",
+    answers: ["Baiona", "A Guarda", "Tui", "Nigrán"],
+    correct: 0,
+    category: "historia",
+    difficulty: "medium"
+  },
+  {
+    id: 298,
+    question: "Cal é o nome da raza bovina autóctona galega?",
+    answers: ["Rubia Gallega", "Cachena", "Caldelá", "Todas as anteriores"],
+    correct: 3,
+    category: "ciencia",
+    difficulty: "medium"
+  },
+  {
+    id: 299,
+    question: "Que xogador galego de tenis acadou maior éxito internacional?",
+    answers: ["David Ferrer", "Tommy Robredo", "Nicolás Almagro", "Feliciano López"],
+    correct: 0,
+    category: "deportes",
+    difficulty: "medium"
+  },
+  {
+    id: 300,
+    question: "En que ano se declarou o Camiño de Santiago Patrimonio da Humanidade?",
+    answers: ["1985", "1993", "1987", "1991"],
+    correct: 0,
+    category: "historia",
+    difficulty: "medium"
+  },
+  {
+    id: 301,
+    question: "Cal é o nome da pedra típica galega usada na construción?",
+    answers: ["Granito", "Pizarra", "Cuarcita", "Todas as anteriores"],
+    correct: 3,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 302,
+    question: "Quen foi o primeiro galego campión do mundo de piragüismo?",
+    answers: ["David Cal", "Carlos Pérez", "Beatriz Manchón", "Miguel García"],
+    correct: 1,
+    category: "deportes",
+    difficulty: "hard"
+  },
+  {
+    id: 303,
+    question: "En que concello se atopa a praia de Rodas?",
+    answers: ["Vigo", "Cangas", "Moaña", "Bueu"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 304,
+    question: "Cal é o nome do instrumental tradicional galego similar ao acordeón?",
+    answers: ["Concertina", "Zanfona", "Pandeireta", "Tambor"],
+    correct: 0,
+    category: "musica",
+    difficulty: "medium"
+  },
+  {
+    id: 305,
+    question: "En que ano se celebraron os primeiros Xogos Galegos?",
+    answers: ["1982", "1983", "1984", "1985"],
+    correct: 1,
+    category: "deportes",
+    difficulty: "hard"
+  },
+  {
+    id: 306,
+    question: "Cal é o nome da universidade privada máis antiga de Galicia?",
+    answers: ["Universidad CEU San Pablo", "Universidad Católica San Antonio", "Universidad Antonio de Nebrija", "Universidad San Jorge"],
+    correct: 0,
+    category: "educacion",
+    difficulty: "hard"
+  },
+  {
+    id: 307,
+    question: "En que concello se atopa o pazo de Meirás?",
+    answers: ["Sada", "Oleiros", "Bergondo", "Arteixo"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 308,
+    question: "Cal é o nome da festividade tradicional galega do 1 de novembro?",
+    answers: ["Samaín", "Magosto", "San Martiño", "Todas as Santas"],
+    correct: 0,
+    category: "cultura",
+    difficulty: "medium"
+  },
+  {
+    id: 309,
+    question: "Quen foi o primeiro galego en gañar o premio Planeta?",
+    answers: ["Torrente Ballester", "Álvaro Pombo", "Manuel Rivas", "Suso de Toro"],
+    correct: 0,
+    category: "literatura",
+    difficulty: "hard"
+  },
+  {
+    id: 310,
+    question: "En que comarca se sitúa a vila de Celanova?",
+    answers: ["Terra de Celanova", "A Limia", "Viana", "Allariz-Maceda"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 311,
+    question: "Cal é o nome do primeiro disco de Luar na Lubre?",
+    answers: ["Plenilunio", "Cántigas do Maio", "Hai un paraíso", "Camiños da fin da terra"],
+    correct: 0,
+    category: "musica",
+    difficulty: "hard"
+  },
+  {
+    id: 312,
+    question: "En que concello se atopa a praia de Carnota?",
+    answers: ["Carnota", "Muros", "Mazaricos", "Dumbría"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "easy"
+  },
+  {
+    id: 313,
+    question: "Cal é a lonxitude da praia de Carnota?",
+    answers: ["6 km", "7 km", "8 km", "9 km"],
+    correct: 1,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 314,
+    question: "Que tenor galego acadou fama internacional?",
+    answers: ["Plácido Domingo", "José Carreras", "Francisco Araiza", "Ningún dos anteriores"],
+    correct: 3,
+    category: "musica",
+    difficulty: "hard"
+  },
+  {
+    id: 315,
+    question: "En que ano se proclamou a autonomía de Galicia?",
+    answers: ["1981", "1982", "1980", "1983"],
+    correct: 0,
+    category: "historia",
+    difficulty: "medium"
+  },
+  {
+    id: 316,
+    question: "Cal é o nome da deputación con maior superficie en Galicia?",
+    answers: ["Lugo", "A Coruña", "Ourense", "Pontevedra"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 317,
+    question: "En que concello están as fragas do Eume?",
+    answers: ["Cabanas", "As Pontes", "Monfero", "Todos os anteriores"],
+    correct: 3,
+    category: "xeografia",
+    difficulty: "medium"
+  },
+  {
+    id: 318,
+    question: "Cal é o nome do prato típico galego feito con polbo?",
+    answers: ["Polbo á feira", "Polbo a la gallega", "Pulpo á galega", "Todas as anteriores"],
+    correct: 3,
+    category: "gastronomia",
+    difficulty: "easy"
+  },
+  {
+    id: 319,
+    question: "Quen foi o primeiro director da Real Filharmonía de Galicia?",
+    answers: ["Helmuth Rilling", "Maximiano Valdés", "Victor Pablo Pérez", "Fernando Puchol"],
+    correct: 2,
+    category: "musica",
+    difficulty: "hard"
+  },
+  {
+    id: 320,
+    question: "En que concello se atopa o dolmen de Dombate?",
+    answers: ["Cabana de Bergantiños", "Carballo", "Malpica", "Ponteceso"],
+    correct: 0,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 321,
+    question: "Cal é o nome da empresa pública de televisión galega?",
+    answers: ["TVG", "CRTVG", "Televisión de Galicia", "Compañía de Radio-Televisión de Galicia"],
+    correct: 3,
+    category: "comunicacion",
+    difficulty: "medium"
+  },
+  {
+    id: 322,
+    question: "En que concello se celebra a festa dos Maios?",
+    answers: ["Ames", "Teo", "Val do Dubra", "Todos os anteriores"],
+    correct: 0,
+    category: "cultura",
+    difficulty: "medium"
+  },
+  {
+    id: 323,
+    question: "Cal é o nome do equipo de rugby máis destacado de Galicia?",
+    answers: ["CRAT", "Belenos RFC", "RC Vigo", "Todas as anteriores"],
+    correct: 3,
+    category: "deportes",
+    difficulty: "medium"
+  },
+  {
+    id: 324,
+    question: "En que ano se creou o Parque Nacional das Illas Atlánticas?",
+    answers: ["2001", "2002", "2003", "2004"],
+    correct: 1,
+    category: "medioambiente",
+    difficulty: "medium"
+  },
+  {
+    id: 325,
+    question: "Cal é o nome da cooperativa láctea máis importante de Galicia?",
+    answers: ["Lactalis", "Danone", "Leche Pascual", "Leche Celta"],
+    correct: 3,
+    category: "economia",
+    difficulty: "medium"
+  },
+  {
+    id: 326,
+    question: "En que concello se atopa o cabo Peñas?",
+    answers: ["Non está en Galicia", "Malpica", "Laxe", "Camariñas"],
+    correct: 0,
+    category: "xeografia",
+    difficulty: "hard"
+  },
+  {
+    id: 327,
+    question: "Cal é o nome do hospital máis antigo de Santiago?",
+    answers: ["Hospital Real", "Hospital dos Reis Católicos", "Hospital Clínico", "Hospital Psiquiátrico"],
+    correct: 1,
+    category: "historia",
+    difficulty: "hard"
+  },
+  {
+    id: 328,
+    question: "En que concello se celebra a Romaría Vikinga de Catoira?",
+    answers: ["Catoira", "Villagarcía", "Pontecesures", "A Illa de Arousa"],
+    correct: 0,
+    category: "cultura",
+    difficulty: "easy"
+  },
+  {
+    id: 329,
+    question: "Cal é o nome da principal ruta de sendeirismo de longa distancia en Galicia?",
+    answers: ["GR-1", "Camiño de Santiago", "Camiño Natural del Miño", "Todas as anteriores"],
+    correct: 3,
+    category: "deportes",
+    difficulty: "medium"
+  },
+  {
+    id: 330,
+    question: "En que ano se abriu ao público o Museo Guggenheim de Bilbao?",
+    answers: ["Non está en Galicia", "1996", "1997", "1998"],
+    correct: 0,
+    category: "arte",
+    difficulty: "hard"
   }
 ];
 
