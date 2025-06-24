@@ -82,26 +82,33 @@ class GameEngine {
   }// Seleccionar preguntas para o xogo
   selectGameQuestions() {
     // Usar o método existente do QuestionsManager
-    this.currentGame.questions = this.questionsManager.prepareGameQuestions(
-      this.currentGame.difficulty,
+    this.questionsManager.prepareGameQuestions(
+      'mixed', // Sempre mixto para simplificar
       this.currentGame.questionsCount
     );
+    
+    // Asegurar que temos as preguntas
+    this.currentGame.questions = this.questionsManager.currentQuestions || [];
   }
 
-  // Mostra a pregunta actual
+  // Mostra a pregunta actual (sen cronómetro)
   showQuestion() {
     if (!this.currentGame) return;
 
     const question = this.questionsManager.getCurrentQuestion();
+    console.log('SHOW QUESTION:', question); // Debug temporal
+    
     if (!question) {
+      console.log('NON HAI MÁIS PREGUNTAS - REMATANDO XOGO'); // Debug temporal
       this.endGame();
       return;
     }
 
     // Actualiza a interface
     this.updateQuestionDisplay(question);
-    this.startQuestionTimer();
     this.updateProgress();
+    
+    // Non iniciar cronómetro xa que o usuario controla
   }
 
   // Actualiza a visualización da pregunta
@@ -127,44 +134,62 @@ class GameEngine {
   }
   // Selecciona unha resposta
   selectAnswer(selectedIndex) {
-    if (!this.currentGame || this.isPaused) return;
+    console.log('=== SELECTANSWER INICIADO ==='); // Debug temporal
+    console.log('Índice seleccionado:', selectedIndex); // Debug temporal
+    
+    if (!this.currentGame || this.isPaused) {
+      console.log('Xogo non dispoñible ou en pausa'); // Debug temporal
+      return;
+    }
 
-    this.stopTimer();
-    
+    // Deshabilitar todas as respostas inmediatamente
+    const answerButtons = document.querySelectorAll('.answer-btn');
+    answerButtons.forEach(btn => {
+      btn.disabled = true;
+      btn.style.pointerEvents = 'none';
+    });
+
     const question = this.questionsManager.getCurrentQuestion();
-    const isCorrect = selectedIndex === question.correct;
-    const timeForQuestion = this.currentGame.timePerQuestion - this.timeLeft;
+    console.log('Pregunta actual obtida:', question); // Debug temporal
     
-    // Garda a resposta
+    if (!question) {
+      console.log('NON SE PUIDO OBTER A PREGUNTA ATUAL'); // Debug temporal
+      return;
+    }
+    
+    const isCorrect = selectedIndex === question.correct;
+    
+    console.log('É correcta?', isCorrect); // Debug temporal
+    console.log('Resposta correcta era:', question.correct); // Debug temporal
+    
+    // Gardar resposta no historial
     const answerRecord = {
       questionId: question.id,
       question: question.question,
       selectedAnswer: question.answers[selectedIndex],
       correctAnswer: question.answers[question.correct],
       isCorrect: isCorrect,
-      timeUsed: timeForQuestion
+      timeUsed: 0 // Sen tempo xa que o usuario controla
     };
     
     this.currentGame.answers.push(answerRecord);
-    this.currentGame.timeUsed += timeForQuestion;
 
-    // Actualiza puntuación
+    // Actualizar puntuación
     if (isCorrect) {
       this.currentGame.correctAnswers++;
-      const timeBonus = Math.max(0, this.timeLeft * 2); // Bono por tempo restante
-      const points = this.currentGame.settings.points + timeBonus;
+      const points = this.currentGame.pointsPerQuestion; // Sen bonus de tempo
       this.currentGame.score += points;
+      console.log('Sumando puntos:', points); // Debug temporal
     } else {
       this.currentGame.wrongAnswers++;
-    }
-
-    // Mostra feedback visual
+      console.log('Resposta incorrecta'); // Debug temporal
+    }    // Mostrar feedback visual
     this.showAnswerFeedback(selectedIndex, question.correct, isCorrect);
 
-    // Continúa co xogo despois dunha pausa
-    setTimeout(() => {
-      this.nextQuestion();
-    }, 2000);
+    // Mostrar botón "Seguinte pregunta" ou "Rematar"
+    this.showNextButton();
+    
+    console.log('=== SELECTANSWER REMATADO ==='); // Debug temporal
   }
 
   // Mostra feedback da resposta
@@ -189,7 +214,7 @@ class GameEngine {
 
   // Reproduce efectos de son e vibración
   playFeedbackEffects(isCorrect) {
-    const settings = this.storageManager.getSettings();
+    const settings = storageManager.getSettings(); // CORRIXIDO: era this.storageManager
     
     if (settings.vibration && navigator.vibrate) {
       if (isCorrect) {
@@ -231,18 +256,46 @@ class GameEngine {
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + duration);
   }
-  // Pasa á seguinte pregunta
+  // Pasa á seguinte pregunta (controlado polo usuario)
   nextQuestion() {
-    if (!this.currentGame) return;
+    console.log('=== NEXTQUESTION INICIADO ==='); // Debug temporal
+    
+    if (!this.currentGame) {
+      console.log('Non hai xogo activo'); // Debug temporal
+      return;
+    }
 
-    this.questionsManager.nextQuestion();
+    // Eliminar botón de seguinte
+    const nextButton = document.getElementById('next-question-btn');
+    if (nextButton) {
+      nextButton.remove();
+    }
+
     this.currentGame.currentQuestion++;
+    console.log('Nova pregunta número:', this.currentGame.currentQuestion); // Debug temporal
 
-    if (this.questionsManager.hasMoreQuestions()) {
+    // Verificar se hai máis preguntas
+    if (this.currentGame.currentQuestion < this.currentGame.questionsCount) {
+      console.log('Hai máis preguntas, continuando...'); // Debug temporal
+      
+      // Mover ao seguinte no QuestionsManager
+      this.questionsManager.nextQuestion();
+      
+      // Reactivar respostas para a nova pregunta
+      const answerButtons = document.querySelectorAll('.answer-btn');
+      answerButtons.forEach(btn => {
+        btn.disabled = false;
+        btn.style.pointerEvents = 'auto';
+        btn.classList.remove('correct', 'incorrect');
+      });
+      
       this.showQuestion();
     } else {
+      console.log('Non hai máis preguntas, rematando xogo'); // Debug temporal
       this.endGame();
     }
+    
+    console.log('=== NEXTQUESTION REMATADO ==='); // Debug temporal
   }
   // Comeza o cronómetro dunha pregunta
   startQuestionTimer() {
@@ -285,6 +338,7 @@ class GameEngine {
 
   // Detén o cronómetro
   stopTimer() {
+    // Método baleiro para evitar erros, pero xa non fai nada
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = null;
@@ -407,7 +461,6 @@ class GameEngine {
     this.currentGame = null;
     this.isPaused = false;
   }
-
   // Calcula o resultado do xogo
   calculateGameResult() {
     const totalTime = Date.now() - this.currentGame.startTime;
@@ -492,40 +545,58 @@ class GameEngine {
     return this.storageManager.clearAll();
   }  // Iniciar xogo simple (só con número de preguntas)
   startSimpleGame(questionsCount) {
+    console.log('Iniciando xogo simple con', questionsCount, 'preguntas'); // Debug temporal
+    
     if (!storageManager.getCurrentUser()) {
       alert('Debes seleccionar un usuario primeiro');
       return;
     }
-
-    // Configuración simple: sen dificultades, só número de preguntas
+    
+    // Configurar xogo
     this.currentGame = {
-      difficulty: 'mixed', // Sempre mixto para simplificar
       questionsCount: questionsCount,
-      timePerQuestion: 25, // Tempo fixo
-      pointsPerQuestion: 15, // Puntos fixos
       currentQuestion: 0,
       score: 0,
       correctAnswers: 0,
       wrongAnswers: 0,
       startTime: Date.now(),
-      questions: [],
+      pointsPerQuestion: 10, // Puntos fixos sen bonus de tempo
       answers: [],
       timeUsed: 0
     };
 
-    // Seleccionar preguntas
+    // Seleccionar e preparar preguntas
     this.selectGameQuestions();
-    
-    if (this.currentGame.questions.length === 0) {
-      alert('Erro: Non se puideron cargar as preguntas');
-      return;
-    }
     
     // Mostrar primeira pregunta
     this.showQuestion();
     
-    // Iniciar cronómetro da pregunta
-    this.startQuestionTimer();
+    console.log('Xogo iniciado correctamente'); // Debug temporal
+  }
+
+  // Mostra o botón para pasar á seguinte pregunta
+  showNextButton() {
+    // Eliminar botón anterior se existe
+    const existingButton = document.getElementById('next-question-btn');
+    if (existingButton) {
+      existingButton.remove();
+    }
+
+    const gameContent = document.querySelector('.game-content');
+    const button = document.createElement('button');
+    button.id = 'next-question-btn';
+    button.className = 'btn btn-primary next-btn';
+    
+    // Verificar se é a última pregunta
+    if (this.currentGame.currentQuestion + 1 >= this.currentGame.questionsCount) {
+      button.textContent = '🏆 Ver Resultados';
+      button.onclick = () => this.endGame();
+    } else {
+      button.textContent = '➡️ Seguinte Pregunta';
+      button.onclick = () => this.nextQuestion();
+    }
+    
+    gameContent.appendChild(button);
   }
 }
 
